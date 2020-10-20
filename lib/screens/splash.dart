@@ -1,0 +1,228 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:quizbox/screens/login_signup.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:quizbox/animations/fade_animation.dart';
+
+class SplashPage extends StatefulWidget {
+  @override
+  _SplashPageState createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin{
+
+  AnimationController _scaleController;
+  AnimationController _scale2Controller;
+  AnimationController _widthController;
+  AnimationController _positionController;
+
+  Animation<double> _scaleAnimation;
+  Animation<double> _scale2Animation;
+  Animation<double> _widthAnimation;
+  Animation<double> _positionAnimation;
+
+  bool hideIcon = false;
+
+  @override
+  // to initialize animation elements
+  void initState() {
+    super.initState();
+
+    _scaleController = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 300)
+    );
+
+    _scaleAnimation = Tween<double>(
+        begin: 1.0, end: 0.8
+    ).animate(_scaleController)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _widthController.forward();
+      }
+    }); // to increase width while moving forward
+
+    _widthController = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 600)
+    );
+
+    _widthAnimation = Tween<double>(
+        begin: 80.0,
+        end: 300.0
+    ).animate(_widthController)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _positionController.forward();
+      }
+    }); // to take button in forward direction
+
+    _positionController = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 1000)
+    );
+
+    _positionAnimation = Tween<double>(
+        begin: 0.0,
+        end: 215.0
+    ).animate(_positionController)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          hideIcon = true;
+        });
+        _scale2Controller.forward();
+      }
+    }); // to determine whether animation is completed or not and then hide the slider button
+
+    _scale2Controller = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 300)
+    );
+
+    _scale2Animation = Tween<double>(
+        begin: 1.0,
+        end: 32.0
+    ).animate(_scale2Controller)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.fade, child: LoginSignup()));
+      }
+    }); //if animation is complete control transition of page to next activity(login)
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    //various decorations with a same image using it in a stack multiple time
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+      body: Container(
+        width: double.infinity,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: -50,
+              left: 0,
+              child: FadeAnimation(1, Container(
+                width: width,
+                height: 400,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/splashImage.png'),
+                        fit: BoxFit.cover
+                    )
+                ),
+              )),
+            ),
+            Positioned(
+              top: -100,
+              left: 0,
+              child: FadeAnimation(1.5, Container(
+                width: width,
+                height: 400,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/splashImage.png'),
+                        fit: BoxFit.cover
+                    )
+                ),
+              )),
+            ),
+            Positioned(
+              top: -150,
+              left: 0,
+              child: FadeAnimation(2, Container(
+                width: width,
+                height: 400,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/splashImage.png'),
+                        fit: BoxFit.cover
+                    )
+                ),
+              )),
+            ),
+            Positioned(
+                top: 100,
+                left: 0,
+                child: FadeAnimation(2.5,Container(
+                  width: width,
+                  height: 300,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/splashIcon.png'),
+                        fit: BoxFit.scaleDown,
+                      )
+                  ),
+                ),
+                )),
+
+            //FadeAnimation has been implemented later
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  FadeAnimation(1, Text("Quiz App",
+                      style: GoogleFonts.montserrat(fontSize: 50.0, color: Colors.white, fontWeight: FontWeight.bold))),
+                  SizedBox(height: 15,),
+                  FadeAnimation(1.5, Text("Welcome, \nProceed to Login/Signup.",
+                    style: TextStyle(color: Colors.white.withOpacity(.7), height: 1.4, fontSize: 30),)),
+                  SizedBox(height: 110,),
+                  FadeAnimation(2, AnimatedBuilder(
+                    animation: _scaleController,
+                    builder: (context, child) => Transform.scale(
+                        scale: _scaleAnimation.value,
+                        child: Center(
+                          child: AnimatedBuilder(
+                            animation: _widthController,
+                            builder: (context, child) => Container(
+                              width: _widthAnimation.value,
+                              height: 80,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.blue.withOpacity(.4)
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  _scaleController.forward();
+                                },
+                                child: Stack(
+                                    children: <Widget> [
+                                      AnimatedBuilder(
+                                        animation: _positionController,
+                                        builder: (context, child) => Positioned(
+                                          left: _positionAnimation.value,
+                                          child: AnimatedBuilder(
+                                            animation: _scale2Controller,
+                                            builder: (context, child) => Transform.scale(
+                                                scale: _scale2Animation.value,
+                                                child: Container(
+                                                  width: 60,
+                                                  height: 60,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.blue
+                                                  ),
+                                                  child: hideIcon == false ? Icon(Icons.arrow_forward, color: Colors.white,) : Container(),
+                                                )
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ]
+                                ),
+                              ),
+                            ),
+                          ),
+                        )),
+                  )),
+                  SizedBox(height: 20,),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
