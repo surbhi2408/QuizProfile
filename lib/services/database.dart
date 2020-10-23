@@ -1,3 +1,5 @@
+// surbhi mayank
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quizbox/models/user.dart';
 import 'package:quizbox/models/user_data.dart';
@@ -10,6 +12,7 @@ class DatabaseService{
   // user collection
   final CollectionReference userCollection = Firestore.instance.collection('users');
 
+  // updating data in the form of list to fireStore
   Future updateUserData(String name,String phoneNo,String photoUrl,String regNo,String branch,String gender) async{
     //print("user id: ${uid}");
     return await userCollection.document(uid).setData({
@@ -21,6 +24,18 @@ class DatabaseService{
       'gender': gender,
     });
   }
+
+  // Future<void> addUserTopics(Map quizData, String id) async{
+  //   await Firestore.instance
+  //       .collection('users')
+  //       .document(uid)
+  //       .collection('topicOfInterests')
+  //       .document(id)
+  //       .setData(quizData)
+  //       .catchError((e){
+  //         print(e.toString());
+  //   });
+  // }
 
   // student list from snapshot
   List<User_Data> _userDataDetailFromSnapshot(QuerySnapshot snapshot){

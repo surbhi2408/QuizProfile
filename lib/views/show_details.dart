@@ -1,3 +1,5 @@
+// surbhi mayank
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,6 +28,7 @@ class _ShowDetailsState extends State<ShowDetails> {
 
   File _imageFile;
 
+  // using this function image is picked from the specified source file
   Future _getImage(BuildContext context,ImageSource source) async{
     ImagePicker.pickImage(source: source, maxWidth: 400.0).then((File image){
       setState(() {
@@ -35,6 +38,7 @@ class _ShowDetailsState extends State<ShowDetails> {
     });
   }
 
+  // uploading pic to fireStore and fetching the same pic to app
   Future uploadPic(BuildContext context) async {
     fileName = basename(_imageFile.path);
     StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
@@ -47,6 +51,7 @@ class _ShowDetailsState extends State<ShowDetails> {
       });
     });
 
+    // when pic is uploaded successfully to fireStore a message is displayed
     setState(() {
       print("Profile Picture Uploaded");
       print(_imageFile);
@@ -54,6 +59,7 @@ class _ShowDetailsState extends State<ShowDetails> {
     });
   }
 
+  // user can choose camera as well as gallery to upload their profile picture
   void _openImagePicker(BuildContext context){
     showModalBottomSheet(
         context: context,
@@ -102,6 +108,7 @@ class _ShowDetailsState extends State<ShowDetails> {
 
   @override
   Widget build(BuildContext context) {
+    // data is uploaded using snapshots
     return StreamBuilder<UserData>(
       stream: DatabaseService(uid: uid).userData,
       builder: (context, snapshot){
@@ -110,6 +117,7 @@ class _ShowDetailsState extends State<ShowDetails> {
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                // photo
                 Align(
                   alignment: Alignment.topCenter,
                   child: CircleAvatar(
@@ -129,6 +137,8 @@ class _ShowDetailsState extends State<ShowDetails> {
                     ),
                   ),
                 ),
+
+                // icon button to pick image from camera or gallery
                 Align(
                   alignment: Alignment.topCenter,
                   child: FlatButton.icon(
@@ -139,6 +149,8 @@ class _ShowDetailsState extends State<ShowDetails> {
                     label: Text(""),
                   ),
                 ),
+
+                // after clicking to add photo in app image gets uploaded to fireStore
                 Align(
                   alignment: Alignment.topCenter,
                   child: FlatButton(
@@ -148,6 +160,8 @@ class _ShowDetailsState extends State<ShowDetails> {
                     },
                   ),
                 ),
+
+                // username
                 SizedBox(height: 20.0,),
                 Text(
                   "Your UserName",
@@ -164,6 +178,7 @@ class _ShowDetailsState extends State<ShowDetails> {
                   style: TextStyle(fontSize: 20),
                 ),
 
+                // phone number
                 SizedBox(height: 20,),
                 Text(
                   "Your Phone Number",
@@ -180,6 +195,7 @@ class _ShowDetailsState extends State<ShowDetails> {
                   style: TextStyle(fontSize: 20),
                 ),
 
+                // registration number
                 SizedBox(height: 20,),
                 Text(
                   "Your Registration Number",
@@ -196,6 +212,7 @@ class _ShowDetailsState extends State<ShowDetails> {
                   style: TextStyle(fontSize: 20),
                 ),
 
+                // user's branch
                 SizedBox(height: 20,),
                 Text(
                   "Your Branch",
@@ -212,6 +229,7 @@ class _ShowDetailsState extends State<ShowDetails> {
                   style: TextStyle(fontSize: 20),
                 ),
 
+                // user's gender
                 SizedBox(height: 20,),
                 Text(
                   "Your Gender",
@@ -232,6 +250,8 @@ class _ShowDetailsState extends State<ShowDetails> {
             ),
           );
         }
+
+        // if snapshot doesn't contain any data initially error message is displayed
         else{
           return Container(child: Text("You got an error"),);
         }

@@ -1,3 +1,6 @@
+// surbhi mayank
+
+// user's data which is to be stored into fireStore
 class User_Data{
 
   final String name;

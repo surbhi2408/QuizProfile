@@ -1,3 +1,5 @@
+// surbhi mayank
+
 import 'package:flutter/material.dart';
 import 'package:quizbox/models/user.dart';
 import 'package:quizbox/services/database.dart';
@@ -27,11 +29,15 @@ class _UpdateInfoState extends State<UpdateInfo> {
 
   @override
   Widget build(BuildContext context) {
+
+    // data is fetched in the list from fireStore
     return StreamBuilder<UserData>(
       stream: DatabaseService(uid: uid).userData,
       builder: (context,snapshot){
+        // if snapshot has some data then is condition will work else it will show an error which is in else part
         if(snapshot.hasData){
           UserData userData = snapshot.data;
+          // updating your info
           return Form(
             key: _formKey,
             child: Column(
@@ -112,6 +118,7 @@ class _UpdateInfoState extends State<UpdateInfo> {
                   },
                 ),
                 SizedBox(height: 15,),
+                // Information is stored to fireStore firebase
                 FlatButton(
                   child: Text("Update"),
                   color: Colors.blue,
@@ -138,6 +145,7 @@ class _UpdateInfoState extends State<UpdateInfo> {
             ),
           );
         }
+        // if snapshot doesn't contain any data then error message is displayed
         else{
           return Container(
             child: Text("You got an error"),

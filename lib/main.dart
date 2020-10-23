@@ -1,3 +1,5 @@
+// surbhi mayank
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,14 +16,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Quiz Box',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: GoogleFonts.openSans().fontFamily,
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: SplashPage(),
+        title: 'Quiz Box',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: GoogleFonts.openSans().fontFamily,
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: SplashPage(),
     );
   }
 }

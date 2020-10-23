@@ -1,3 +1,5 @@
+// surbhi mayank
+
 import 'package:flutter/material.dart';
 import 'package:quizbox/main.dart';
 import 'package:quizbox/services/auth.dart';
@@ -19,6 +21,7 @@ class _HomeState extends State<Home> {
   String uid;
   _HomeState({this.uid});
 
+  // will initially start from index 1 i.e. HomePage will open
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomePage(),
@@ -32,6 +35,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // bottom navigation bar
   @override
   Widget build(BuildContext context) {
     return Scaffold(

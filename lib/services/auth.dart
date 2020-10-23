@@ -1,3 +1,5 @@
+// surbhi mayank
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quizbox/services/database.dart';
@@ -42,6 +44,8 @@ Future<String> signInWithGoogle() async {
     imageUrl = user.photoUrl;
 
     await DatabaseService(uid: user.uid).updateUserData(name, phoneNo, imageUrl, null, null, null);
+
+    //HelperFunctions.saveUserLoggedInDetails(isLoggedIn: true);
 
     print("Username: ${user.uid}");
     return '${user}';
